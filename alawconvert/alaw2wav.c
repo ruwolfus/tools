@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "alaw2wav.h"
 
 typedef enum { TRUE = 1, FALSE = 0 } bool;
 
@@ -6,28 +7,57 @@ int main(void)
 {
     FILE *infilep=0;
     FILE *outfilep=0;
+#ifdef HEADERFROMFILE    
     FILE *wavstubfilep=0;
+#endif    
     const char* infile = "alaw.txt";
     const char* outfile = "tests-alaw.wav";
+#ifdef HEADERFROMFILE    
     const char* wavstubfile = "tests-alaw-roh.wav";
+#endif    
     unsigned char inb;
     bool bstart=FALSE;
     unsigned char outbyte = 0;
+    unsigned char header[1000];
+    int headerlen = 0;
 
     infilep = fopen(infile,"r");
+#ifdef HEADERFROMFILE    
     wavstubfilep = fopen(wavstubfile,"r");
+#endif    
     outfilep = fopen(outfile,"w");
-    if(!infilep || !outfilep || !wavstubfilep)
+    if(!infilep || !outfilep
+#ifdef HEADERFROMFILE    
+    || !wavstubfilep
+#endif    
+    )
     {
         if(infilep) fclose(infilep);
         if(outfilep) fclose(outfilep);
+#ifdef HEADERFROMFILE        
         if(wavstubfilep) fclose(wavstubfilep);
+#endif        
     }
     //read the header from a file
-    while(fscanf(wavstubfilep,"%c",&inb) != EOF)
+#ifdef HEADERFROMFILE
+    while(fscanf(wavstubfilep,"%c",&inb) != EOF && (headerlen < sizeof(header)))
     {
-        fprintf(outfilep,"%c",inb);
+      header[headerlen++] = inb;
     };
+#else    
+    while((headerlen < sizeof(header)) && (headerlen < sizeof(headerraw)))
+    {
+      header[headerlen] = headerraw[headerlen];
+      headerlen++;
+    };
+#endif    
+
+    int i = 0;
+    while(i < headerlen)
+    {
+        fprintf(outfilep,"%c",header[i++]);
+    };
+
     //read samples from tracefile
     while(fscanf(infilep,"%c",&inb) != EOF)
     {
@@ -63,5 +93,7 @@ int main(void)
 
     if(infilep) fclose(infilep);
     if(outfilep) fclose(outfilep);
+#ifdef HEADERFROMFILE    
     if(wavstubfilep) fclose(wavstubfilep);
+#endif
 }
