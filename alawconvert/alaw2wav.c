@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include "alaw2wav.h"
 
+//#define HEADERFROMFILE
+//#define WRITEHEADER
+
 typedef enum { TRUE = 1, FALSE = 0 } bool;
 
 int main(void)
@@ -11,7 +14,11 @@ int main(void)
     FILE *wavstubfilep=0;
 #endif    
     const char* infile = "alaw.txt";
+#ifdef WRITEHEADER
     const char* outfile = "tests-alaw.wav";
+#else
+    const char* outfile = "alaw.bin";
+#endif
 #ifdef HEADERFROMFILE    
     const char* wavstubfile = "tests-alaw-roh.wav";
 #endif    
@@ -52,11 +59,13 @@ int main(void)
     };
 #endif    
 
+#ifdef WRITEHEADER
     int i = 0;
     while(i < headerlen)
     {
         fprintf(outfilep,"%c",header[i++]);
     };
+#endif    
 
     //read samples from tracefile
     while(fscanf(infilep,"%c",&inb) != EOF)
