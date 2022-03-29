@@ -18,7 +18,7 @@ cp session1rx.txt alaw.txt
 alaw2bin.exe
 mv alaw.bin session1rxrtp.bin
 sed 's/ 80 .. .. .. .. .. .. .. .. .. .. ../ /' session1rx.txt > alaw1.txt
-sed 's/ 90 .. .. .. .. .. .. .. .. .. .. ../ /' alaw1.txt > alaw.txt
+sed 's/ 90 .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ../ /' alaw1.txt > alaw.txt
 alaw2bin.exe
 mv alaw.bin session1rx.bin
 del alaw.txt
@@ -35,7 +35,7 @@ cp session1tx.txt alaw.txt
 alaw2bin.exe
 mv alaw.bin session1txrtp.bin
 sed 's/ 80 .. .. .. .. .. .. .. .. .. .. ../ /' session1tx.txt > alaw1.txt
-sed 's/ 90 .. .. .. .. .. .. .. .. .. .. ../ /' alaw1.txt > alaw.txt
+sed 's/ 90 .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ../ /' alaw1.txt > alaw.txt
 alaw2bin.exe
 mv alaw.bin session1tx.bin
 del alaw.txt
@@ -50,7 +50,7 @@ cp session0tx.txt alaw.txt
 alaw2bin.exe
 mv alaw.bin session0txrtp.bin
 sed 's/ 80 .. .. .. .. .. .. .. .. .. .. ../ /' session0tx.txt > alaw1.txt
-sed 's/ 90 .. .. .. .. .. .. .. .. .. .. ../ /' alaw1.txt > alaw.txt
+sed 's/ 90 .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ../ /' alaw1.txt > alaw.txt
 alaw2bin.exe
 mv alaw.bin session0tx.bin
 del alaw.txt
@@ -65,11 +65,16 @@ cp session0rx.txt alaw.txt
 alaw2bin.exe
 mv alaw.bin session0rxrtp.bin
 sed 's/ 80 .. .. .. .. .. .. .. .. .. .. ../ /' session0rx.txt > alaw1.txt
-sed 's/ 90 .. .. .. .. .. .. .. .. .. .. ../ /' alaw1.txt > alaw.txt
+sed 's/ 90 .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ../ /' alaw1.txt > alaw.txt
 alaw2bin.exe
 mv alaw.bin session0rx.bin
 del alaw.txt
 del alaw1.txt
+
+gst-launch-1.0 -v filesrc location=session0rx.bin ! audio/x-alaw, channels=1, rate=8000 ! alawdec ! audioconvert ! audioresample ! wavenc ! filesink location=session0rx.wav
+gst-launch-1.0 -v filesrc location=session0tx.bin ! audio/x-alaw, channels=1, rate=8000 ! alawdec ! audioconvert ! audioresample ! wavenc ! filesink location=session0tx.wav
+gst-launch-1.0 -v filesrc location=session1rx.bin ! audio/x-alaw, channels=1, rate=8000 ! alawdec ! audioconvert ! audioresample ! wavenc ! filesink location=session1rx.wav
+gst-launch-1.0 -v filesrc location=session1tx.bin ! audio/x-alaw, channels=1, rate=8000 ! alawdec ! audioconvert ! audioresample ! wavenc ! filesink location=session1tx.wav
 
 :ende
 
