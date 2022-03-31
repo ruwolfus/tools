@@ -71,10 +71,27 @@ mv alaw.bin session0rx.bin
 del alaw.txt
 del alaw1.txt
 
+goto ende
+
+rem outgoing call: rtpsession0 -> webrtc rtpsession1 -> rtp
+rem incoming call: rtpsession1 -> webrtc rtpsession0 -> rtp (session0rx.bin==session1tx.bin session1rx.bin==session0tx.bin)
+rem all alaw:
 gst-launch-1.0 -v filesrc location=session0rx.bin ! audio/x-alaw, channels=1, rate=8000 ! alawdec ! audioconvert ! audioresample ! wavenc ! filesink location=session0rx.wav
 gst-launch-1.0 -v filesrc location=session0tx.bin ! audio/x-alaw, channels=1, rate=8000 ! alawdec ! audioconvert ! audioresample ! wavenc ! filesink location=session0tx.wav
 gst-launch-1.0 -v filesrc location=session1rx.bin ! audio/x-alaw, channels=1, rate=8000 ! alawdec ! audioconvert ! audioresample ! wavenc ! filesink location=session1rx.wav
 gst-launch-1.0 -v filesrc location=session1tx.bin ! audio/x-alaw, channels=1, rate=8000 ! alawdec ! audioconvert ! audioresample ! wavenc ! filesink location=session1tx.wav
+rem out call webrtc opus rtp alaw -> opus funktioniert nicht
+gst-launch-1.0 -v filesrc location=session0rx.bin ! audio/x-opus, channels=1, rate=48000 ! opusdec ! audioconvert ! audioresample ! wavenc ! filesink location=session0rx.wav
+gst-launch-1.0 -v filesrc location=session0tx.bin ! audio/x-opus, channels=1, rate=48000 ! opusdec ! audioconvert ! audioresample ! wavenc ! filesink location=session0tx.wav
+gst-launch-1.0 -v filesrc location=session1rx.bin ! audio/x-alaw, channels=1, rate=8000 ! alawdec ! audioconvert ! audioresample ! wavenc ! filesink location=session1rx.wav
+gst-launch-1.0 -v filesrc location=session1tx.bin ! audio/x-alaw, channels=1, rate=8000 ! alawdec ! audioconvert ! audioresample ! wavenc ! filesink location=session1tx.wav
+rem inc call webrtc opus rtp alaw -> opus funktioniert nicht
+gst-launch-1.0 -v filesrc location=session0rx.bin ! audio/x-alaw, channels=1, rate=8000 ! alawdec ! audioconvert ! audioresample ! wavenc ! filesink location=session0rx.wav
+gst-launch-1.0 -v filesrc location=session0tx.bin ! audio/x-alaw, channels=1, rate=8000 ! alawdec ! audioconvert ! audioresample ! wavenc ! filesink location=session0tx.wav
+gst-launch-1.0 -v filesrc location=session1rx.bin ! audio/x-opus, channels=1, rate=48000 ! opusdec ! audioconvert ! audioresample ! wavenc ! filesink location=session1rx.wav
+gst-launch-1.0 -v filesrc location=session1tx.bin ! audio/x-opus, channels=1, rate=48000 ! opusdec ! audioconvert ! audioresample ! wavenc ! filesink location=session1tx.wav
+
+
 
 :ende
 
