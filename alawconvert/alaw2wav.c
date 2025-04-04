@@ -43,7 +43,8 @@ int main(void)
         if(outfilep) fclose(outfilep);
 #ifdef HEADERFROMFILE        
         if(wavstubfilep) fclose(wavstubfilep);
-#endif        
+#endif
+        return 3;
     }
     //read the header from a file
 #ifdef HEADERFROMFILE
@@ -105,4 +106,6 @@ int main(void)
 #ifdef HEADERFROMFILE    
     if(wavstubfilep) fclose(wavstubfilep);
 #endif
+
+    return 0;
 }
