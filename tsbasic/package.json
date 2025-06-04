@@ -1,0 +1,16 @@
+{
+  "name": "tsbasic",
+  "version": "1.0.0",
+  "description": "auswertung tsbasic logfiles",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.15.29",
+    "typescript": "^5.8.3"
+  }
+}

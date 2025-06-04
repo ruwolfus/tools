@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es6",                      // Output auf ECMAScript 6
+    "module": "commonjs",                 // Modul-System
+    "rootDir": "./src",                   // Wo die TypScript-Dateien liegen
+    "outDir": "./dist",                   // Wo die kompilierten JS-Dateien abgelegt werden
+    "strict": true,                       // Schaltet strikte Typprüfung ein
+    "esModuleInterop": true,              // Ermöglicht die Interoperabilität mit ES-Modulen
+    "sourceMap": true                     // Generiert Source Maps
+  }
+}
